@@ -1,0 +1,20 @@
+PASS  01  WF001 success      WF001 - Tests workflow selection and threshold logic
+PASS  02  WF002 success      WF002 - Tests comparison and decision logic
+PASS  03  WF003 success      WF003 - Tests file ingestion and validation
+PASS  04  WF004 success      WF004 - Tests LLM workflow and missing-data handling
+PASS  05  WF005 success      WF005 - Tests lookup and missing-order handling
+PASS  06  WF006 success      WF006 - Tests similarity and confidence
+PASS  07  WF007 needs_input  WF007 - Tests structured content generation
+PASS  08  WF008 success      WF008 - Tests classification and mapping
+PASS  09  WF009 success      WF009 - Tests ranking and decision logic
+PASS  10  WF010 success      WF010 - Tests aggregation and reporting
+PASS  11  WF005 needs_input  WF005 - order not found -> asks for another identifier
+PASS  12  WF005 success      WF005 - lookup by email (2 orders)
+PASS  13  WF005 success      WF005 - flaky carrier API: retry succeeds
+PASS  14  WF005 success      WF005 - carrier has no record: optional step degrades gracefully
+PASS  15  WF005 needs_input  WF005 - no identifier given
+PASS  16  WF002 success      WF002 - custom 20% threshold taken from the request
+PASS  17  WF003 failed       WF003 - Excel vendor file, missing file path -> clear error
+PASS  18  WF007 success      WF007 - goal + dates supplied -> full brief
+PASS  19  WF009 escalated    WF009 - nobody has the skill -> escalate
+PASS  20  -     no_match     Ambiguous request -> asks to clarify instead of guessing

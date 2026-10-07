@@ -1,0 +1,30 @@
+# WF005 - carrier has no record: optional step degrades gracefully
+
+User Request: "Where is order ORD-1006?"
+
+Selected Workflow: Customer Order Status (WF005)
+  Router: lexical | confidence 0.48 | Highest TF-IDF similarity (0.476) to 'Customer Order Status' (next best 0.0).
+  Parameters extracted from request: {'order_id': 'ORD-1006'}
+
+Steps Executed:
+  1. [OK]   Validate identifier [0 ms] - identifier OK: {'order_id': 'ORD-1006'}
+  2. [OK]   search order data [0 ms] - 1 order(s) found
+  3. [OK]   retrieve order status [0 ms] - ORD-1006: Shipped
+  4. [WARN] retrieve shipment information [0 ms] - shipment lookup failed for all orders
+  5. [OK]   summarize current status [0 ms] - summarised 1 order(s)
+
+Tool / API calls:
+  - order_api(order_id='ORD-1006') -> ok
+  - shipment_api(shipment_id='SH-9999') -> error: carrier has no record of shipment SH-9999 [attempt 1]
+
+Warnings:
+  ! ORD-1006: shipment lookup failed (carrier has no record of shipment SH-9999)
+  ! Optional step 'retrieve shipment information' failed and was skipped: shipment lookup failed for all orders
+
+Status: SUCCESS  (0 ms)
+
+Result:
+  ORD-1006 (placed 2026-10-02)
+    Status:   Shipped
+    Items:    1 x Canvas Backpack
+    Shipment: shipment details temporarily unavailable from the carrier; please try again later

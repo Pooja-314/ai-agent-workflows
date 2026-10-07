@@ -1,0 +1,27 @@
+# WF005 - flaky carrier API: retry succeeds
+
+User Request: "Where is order ORD-1004?"
+
+Selected Workflow: Customer Order Status (WF005)
+  Router: lexical | confidence 0.48 | Highest TF-IDF similarity (0.476) to 'Customer Order Status' (next best 0.0).
+  Parameters extracted from request: {'order_id': 'ORD-1004'}
+
+Steps Executed:
+  1. [OK]   Validate identifier [0 ms] - identifier OK: {'order_id': 'ORD-1004'}
+  2. [OK]   search order data [0 ms] - 1 order(s) found
+  3. [OK]   retrieve order status [0 ms] - ORD-1004: Shipped
+  4. [OK]   retrieve shipment information [0 ms] (after 2 attempts) - ORD-1004: Out for delivery
+  5. [OK]   summarize current status [0 ms] - summarised 1 order(s)
+
+Tool / API calls:
+  - order_api(order_id='ORD-1004') -> ok
+  - shipment_api(shipment_id='SH-4004') -> error: carrier API timeout [attempt 1]
+  - shipment_api(shipment_id='SH-4004') -> ok [attempt 2]
+
+Status: SUCCESS  (0 ms)
+
+Result:
+  ORD-1004 (placed 2026-10-01)
+    Status:   Shipped
+    Items:    3 x Wool Scarf
+    Shipment: BlueDart - Out for delivery (tracking BD7770004, ETA 2026-10-06, last seen: Local depot)

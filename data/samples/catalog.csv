@@ -1,0 +1,10 @@
+sku,name,brand,category,color,size,price
+SKU-1001,Classic Cotton T-Shirt,Acme,Apparel,White,M,19.99
+sku 1001,Classic Cotton T Shirt,Acme,Apparel,White,M,19.99
+SKU-1002,Classic Cotton Tee,Acme,Apparel,White,M,19.49
+SKU-1003,Classic Cotton T-Shirt,Acme,Apparel,Black,M,19.99
+SKU-2001,Stainless Steel Water Bottle 750ml,HydroPro,Drinkware,Silver,750ml,14.99
+SKU-2002,HydroPro Stainless Steel Water Bottle (750 ml),HydroPro,Drinkware,Silver,750ml,14.99
+SKU-3001,Leather Wallet Bifold,Nord,Accessories,Brown,OS,35.00
+SKU-3002,Wireless Mouse,Logi,Electronics,Black,OS,19.00
+SKU-3003,Bamboo Cutting Board,HomeCo,Kitchen,Natural,L,22.00

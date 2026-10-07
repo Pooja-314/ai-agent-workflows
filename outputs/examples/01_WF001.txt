@@ -1,0 +1,40 @@
+# WF001 - Tests workflow selection and threshold logic
+
+User Request: "Which products need restocking?"
+
+Selected Workflow: Inventory Restock Check (WF001)
+  Router: lexical | confidence 0.57 | Highest TF-IDF similarity (0.566) to 'Inventory Restock Check' (next best 0.158).
+
+Steps Executed:
+  1. [OK]   Load inventory [0 ms] - loaded 8 products from data/samples/inventory.csv
+  2. [OK]   compare current stock with minimum threshold [0 ms] - compared 7 products, skipped 1 invalid
+  3. [OK]   identify low-stock products [0 ms] - 4 product(s) below minimum
+  4. [OK]   calculate reorder quantity [0 ms] - reorder quantities calculated
+  5. [OK]   generate restock list [0 ms] - restock list with 4 product(s)
+
+Conditions / Decisions:
+  * Parameter 'inventory_csv' not supplied -> using default 'data/samples/inventory.csv'
+  * Rule: current_stock < minimum_stock => restock (using per-product minimum_stock)
+  * Reorder qty = (max_stock, or 2 x minimum if no max) - current_stock
+
+Tool / API calls:
+  - csv_reader(path='data/samples/inventory.csv') -> ok
+  - calculator(op='reorder_qty', current='12.0', minimum='20.0', maximum='100.0') -> ok
+  - calculator(op='reorder_qty', current='5.0', minimum='10.0', maximum='50.0') -> ok
+  - calculator(op='reorder_qty', current='0.0', minimum='8.0', maximum='30.0') -> ok
+  - calculator(op='reorder_qty', current='8.0', minimum='12.0', maximum='None') -> ok
+
+Warnings:
+  ! SKU-007: unreadable stock/threshold (current='N/A') - skipped
+
+Status: SUCCESS  (0 ms)
+
+Result:
+Products requiring restocking (4 of 7 checked):
+  sku      product                 current  minimum  reorder_qty
+  -------  ----------------------  -------  -------  -----------
+  SKU-001  Classic Cotton T-Shirt  12       20       88         
+  SKU-005  Wool Scarf              0        8        30         
+  SKU-003  Running Shoes           5        10       45         
+  SKU-006  Canvas Backpack         8        12       16         
+  Saved: outputs/artifacts/WF001_restock_list.csv

@@ -1,0 +1,9 @@
+# Ambiguous request -> asks to clarify instead of guessing
+
+User Request: "hello there"
+
+Selected Workflow: (none)
+Router: lexical - No workflow matched confidently; please clarify.
+
+Result:
+  I could not tell which workflow you mean. Closest: WF001 (Inventory Restock Check), WF002 (Product Price Validation), WF003 (Vendor File Processing). Could you rephrase or name the task?

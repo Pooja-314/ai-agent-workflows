@@ -1,0 +1,28 @@
+# WF009 - nobody has the skill -> escalate
+
+User Request: "Assign this urgent task to the best available developer."
+
+Selected Workflow: Employee Task Assignment (WF009)
+  Router: lexical | confidence 0.53 | Highest TF-IDF similarity (0.525) to 'Employee Task Assignment' (next best 0.023).
+
+Steps Executed:
+  1. [OK]   Understand task requirements [0 ms] - role=developer, skills=['kubernetes'], priority=High, est=6.0h
+  2. [OK]   compare employee skills [0 ms] - Aarav Mehta: 0%, Simran Kaur: 0%, Rohan Gupta: 0%, Neha Sharma: 0% (role mismatch), Karan Verma: 0%
+  3. [OK]   check current workload [0 ms] - Aarav Mehta: 8h free, Simran Kaur: 20h free, Rohan Gupta: 2h free, Neha Sharma: 30h free, Karan Verma: 16h free
+  4. [OK]   rank candidates [0 ms] - Neha Sharma=0.3 [excluded: role mismatch, missing skills]; Simran Kaur=0.2 [excluded: missing skills]; Karan Verma=0.16 [excluded: missing skills]; Aarav Mehta=0.08 [excluded: missing skills]; Rohan Gupta=0.02 [excluded: missing skills, only 2h free (<6h needed)]
+  5. [FAIL] select employee [0 ms] - No suitable employee for this task (role=developer, skills=['kubernetes'], needs 6h). Escalating to the manager for a decision (hire/contract, re-prioritise, or training).
+  6. [SKIP] generate assignment summary [0 ms] - not executed (earlier step stopped the run)
+
+Conditions / Decisions:
+  * Skill coverage = share of required skills the employee has (100% if the task names no specific skill); wrong role is excluded
+  * Score = 0.6 x skill coverage + 0.4 x (spare hours / capacity). Candidates need the role, all required skills and enough spare hours.
+  * No suitable employee -> escalate to manager (workflow rule)
+
+Tool / API calls:
+  - json_reader(path='data/samples/task.json') -> ok
+  - json_reader(path='data/samples/employees.json') -> ok
+
+Status: ESCALATED  (0 ms)
+
+Result:
+  No suitable employee for this task (role=developer, skills=['kubernetes'], needs 6h). Escalating to the manager for a decision (hire/contract, re-prioritise, or training).

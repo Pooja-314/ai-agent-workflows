@@ -1,0 +1,27 @@
+# WF005 - order not found -> asks for another identifier
+
+User Request: "Where is order ORD-9999?"
+
+Selected Workflow: Customer Order Status (WF005)
+  Router: lexical | confidence 0.48 | Highest TF-IDF similarity (0.476) to 'Customer Order Status' (next best 0.0).
+  Parameters extracted from request: {'order_id': 'ORD-9999'}
+
+Steps Executed:
+  1. [OK]   Validate identifier [0 ms] - identifier OK: {'order_id': 'ORD-9999'}
+  2. [FAIL] search order data [0 ms] - No order found for 'ORD-9999'. Please provide another identifier (order ID or customer email).
+  3. [SKIP] retrieve order status [0 ms] - not executed (earlier step stopped the run)
+  4. [SKIP] retrieve shipment information [0 ms] - not executed (earlier step stopped the run)
+  5. [SKIP] summarize current status [0 ms] - not executed (earlier step stopped the run)
+
+Conditions / Decisions:
+  * No order found -> ask the user for another identifier (per workflow rule)
+
+Tool / API calls:
+  - order_api(order_id='ORD-9999') -> ok
+
+Status: NEEDS_INPUT  (0 ms)
+
+Result:
+  No order found for 'ORD-9999'. Please provide another identifier (order ID or customer email).
+
+  -> Provide: order_id, email  (e.g. --param order_id=...)

@@ -1,0 +1,8 @@
+openpyxl>=3.1
+python-dotenv>=1.0
+# optional - only needed if you set an API key:
+anthropic>=0.40
+openai>=1.40
+pytest>=8.0
+
+streamlit>=1.40

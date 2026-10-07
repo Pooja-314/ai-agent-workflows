@@ -1,0 +1,10 @@
+{
+  "skill_catalog": ["python", "api", "django", "aws", "javascript", "react", "node", "ml", "sql", "docker", "figma", "ui", "kubernetes", "rust", "seo"],
+  "employees": [
+    {"name": "Aarav Mehta", "role": "developer", "skills": ["python", "api", "django", "aws"], "capacity_hours": 40, "workload_hours": 32},
+    {"name": "Simran Kaur", "role": "developer", "skills": ["javascript", "react", "node"], "capacity_hours": 40, "workload_hours": 20},
+    {"name": "Rohan Gupta", "role": "developer", "skills": ["python", "ml", "sql"], "capacity_hours": 40, "workload_hours": 38},
+    {"name": "Neha Sharma", "role": "designer", "skills": ["figma", "ui"], "capacity_hours": 40, "workload_hours": 10},
+    {"name": "Karan Verma", "role": "developer", "skills": ["python", "api", "docker", "aws"], "capacity_hours": 40, "workload_hours": 24}
+  ]
+}

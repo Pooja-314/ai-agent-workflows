@@ -1,0 +1,41 @@
+# WF009 - Tests ranking and decision logic
+
+User Request: "Assign this urgent task to the best available developer."
+
+Selected Workflow: Employee Task Assignment (WF009)
+  Router: lexical | confidence 0.53 | Highest TF-IDF similarity (0.525) to 'Employee Task Assignment' (next best 0.023).
+
+Steps Executed:
+  1. [OK]   Understand task requirements [0 ms] - role=developer, skills=['api'], priority=High, est=6.0h
+  2. [OK]   compare employee skills [0 ms] - Aarav Mehta: 100%, Simran Kaur: 0%, Rohan Gupta: 0%, Neha Sharma: 0% (role mismatch), Karan Verma: 100%
+  3. [OK]   check current workload [0 ms] - Aarav Mehta: 8h free, Simran Kaur: 20h free, Rohan Gupta: 2h free, Neha Sharma: 30h free, Karan Verma: 16h free
+  4. [OK]   rank candidates [0 ms] - Karan Verma=0.76; Aarav Mehta=0.68; Neha Sharma=0.3 [excluded: role mismatch, missing skills]; Simran Kaur=0.2 [excluded: missing skills]; Rohan Gupta=0.02 [excluded: missing skills, only 2h free (<6h needed)]
+  5. [OK]   select employee [0 ms] - selected Karan Verma
+  6. [OK]   generate assignment summary [0 ms] - assigned to Karan Verma
+
+Conditions / Decisions:
+  * Request contained no task details -> using sample task from data/samples/task.json
+  * Skill coverage = share of required skills the employee has (100% if the task names no specific skill); wrong role is excluded
+  * Score = 0.6 x skill coverage + 0.4 x (spare hours / capacity). Candidates need the role, all required skills and enough spare hours.
+
+Tool / API calls:
+  - json_reader(path='data/samples/task.json') -> ok
+  - json_reader(path='data/samples/employees.json') -> ok
+
+Status: SUCCESS  (0 ms)
+
+Result:
+Recommended assignee: Karan Verma (developer)
+  Reasoning: has api, 16h free of 40h capacity (60% utilised); runner-up: Aarav Mehta
+  Priority: High
+  Deadline: 2026-10-09
+  Task: Urgent: fix intermittent 500 errors in the checkout payment API
+
+  Candidate ranking:
+  name         score  free_h  note                                     
+  -----------  -----  ------  -----------------------------------------
+  Karan Verma  0.76   16      eligible                                 
+  Aarav Mehta  0.68   8       eligible                                 
+  Neha Sharma  0.3    30      role mismatch, missing skills            
+  Simran Kaur  0.2    20      missing skills                           
+  Rohan Gupta  0.02   2       missing skills, only 2h free (<6h needed)

@@ -1,0 +1,24 @@
+# WF007 - Tests structured content generation
+
+User Request: "Create a campaign brief for the new collection."
+
+Selected Workflow: Marketing Campaign Brief (WF007)
+  Router: lexical | confidence 0.75 | Highest TF-IDF similarity (0.754) to 'Marketing Campaign Brief' (next best 0.024).
+
+Steps Executed:
+  1. [FAIL] Validate inputs [0 ms] - Before I can write the brief I need: the campaign goal and the campaign dates (e.g. 2026-11-01 to 2026-11-30).
+  2. [SKIP] identify campaign objective [0 ms] - not executed (earlier step stopped the run)
+  3. [SKIP] summarize products [0 ms] - not executed (earlier step stopped the run)
+  4. [SKIP] create messaging [0 ms] - not executed (earlier step stopped the run)
+  5. [SKIP] create channel recommendations [0 ms] - not executed (earlier step stopped the run)
+  6. [SKIP] create campaign checklist [0 ms] - not executed (earlier step stopped the run)
+
+Conditions / Decisions:
+  * Rule: goal and dates are mandatory -> ask before generating anything
+
+Status: NEEDS_INPUT  (0 ms)
+
+Result:
+  Before I can write the brief I need: the campaign goal and the campaign dates (e.g. 2026-11-01 to 2026-11-30).
+
+  -> Provide: goal, dates  (e.g. --param goal=...)

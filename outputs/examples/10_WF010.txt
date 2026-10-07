@@ -1,0 +1,52 @@
+# WF010 - Tests aggregation and reporting
+
+User Request: "Which workflows are failing most often?"
+
+Selected Workflow: Workflow Performance Report (WF010)
+  Router: lexical | confidence 0.28 | Highest TF-IDF similarity (0.275) to 'Workflow Performance Report' (next best 0.0).
+
+Steps Executed:
+  1. [OK]   Load execution logs [1 ms] - 1070 step-execution log rows
+  2. [OK]   calculate success/failure rate [0 ms] - 200 runs across 10 workflows
+  3. [OK]   calculate average execution time [0 ms] - WF001: 1044ms, WF002: 1027ms, WF003: 3430ms, WF004: 4101ms, WF005: 4566ms, WF006: 2882ms, WF007: 3936ms, WF008: 6197ms, WF009: 1197ms, WF010: 1034ms
+  4. [OK]   identify frequent errors [0 ms] - WF002: KeyError: sku x1; WF003: ParserError: unexpected delimiter x3; WF004: LLMTimeout: description generation x2; WF005: ShipmentAPITimeout: carrier unreachable x5; WF007: LLMRateLimit: 429 x6; WF008: LLMTimeout: intent classification x1; WF009: DBConnectionError: employee table x2; WF010: FileNotFoundError: logs x2
+  5. [OK]   identify slow steps [0 ms] - WF001: 'compare current stock with minimum threshold' 227ms; WF002: 'calculate percentage difference' 225ms; WF003: 'Read file' 2523ms; WF004: 'create product description' 3346ms; WF005: 'retrieve shipment information' 3815ms; WF006: 'group likely duplicates' 1835ms; WF007: 'create messaging' 2943ms; WF008: 'classify search intent' 5149ms; WF009: 'generate assignment summary' 233ms; WF010: 'identify slow steps' 229ms
+  6. [OK]   generate recommendations [0 ms] - 8 recommendation(s)
+
+Conditions / Decisions:
+  * Parameter 'logs_csv' not supplied -> using default 'data/samples/execution_logs.csv'
+  * Parameter 'failure_threshold_pct' not supplied -> using default 10.0
+  * Parameter 'time_threshold_ms' not supplied -> using default 3000.0
+  * Flag workflow if failure rate > 10.0% OR average run time > 3000 ms
+
+Tool / API calls:
+  - csv_reader(path='data/samples/execution_logs.csv') -> ok
+  - calculator(10 calls) -> ok
+  - calculator(10 calls) -> ok
+
+Status: SUCCESS  (2 ms)
+
+Result:
+Workflow performance summary (sorted by failure rate):
+  workflow  runs  failure_%  avg_ms  flags             
+  --------  ----  ---------  ------  ------------------
+  WF007     20    30.0       3936    HIGH FAILURE, SLOW
+  WF005     20    25.0       4566    HIGH FAILURE, SLOW
+  WF003     20    15.0       3430    HIGH FAILURE, SLOW
+  WF004     20    10.0       4101    SLOW              
+  WF009     20    10.0       1197    ok                
+  WF010     20    10.0       1034    ok                
+  WF002     20    5.0        1027    ok                
+  WF008     20    5.0        6197    SLOW              
+  WF001     20    0.0        1044    ok                
+  WF006     20    0.0        2882    ok                
+
+  Recommendations:
+    1. WF007: failure rate 30.0% - most common error 'LLMRateLimit: 429' (6x). Add retries/back-off and input validation around that step.
+    2. WF007: avg 3936ms - slowest step is 'create messaging' (2943ms). Cache, batch or run it asynchronously.
+    3. WF005: failure rate 25.0% - most common error 'ShipmentAPITimeout: carrier unreachable' (5x). Add retries/back-off and input validation around that step.
+    4. WF005: avg 4566ms - slowest step is 'retrieve shipment information' (3815ms). Cache, batch or run it asynchronously.
+    5. WF003: failure rate 15.0% - most common error 'ParserError: unexpected delimiter' (3x). Add retries/back-off and input validation around that step.
+    6. WF003: avg 3430ms - slowest step is 'Read file' (2523ms). Cache, batch or run it asynchronously.
+    7. WF004: avg 4101ms - slowest step is 'create product description' (3346ms). Cache, batch or run it asynchronously.
+    8. WF008: avg 6197ms - slowest step is 'classify search intent' (5149ms). Cache, batch or run it asynchronously.

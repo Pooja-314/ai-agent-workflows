@@ -1,0 +1,5 @@
+sku,product,current,minimum,reorder_qty
+SKU-001,Classic Cotton T-Shirt,12,20,88
+SKU-005,Wool Scarf,0,8,30
+SKU-003,Running Shoes,5,10,45
+SKU-006,Canvas Backpack,8,12,16

@@ -1,0 +1,26 @@
+# Environment / secrets
+.env
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Test / tooling cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Generated runtime logs
+outputs/run_log.csv
+
+# OS / IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

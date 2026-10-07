@@ -1,0 +1,21 @@
+{
+  "orders": [
+    {"order_id": "ORD-1001", "customer_email": "jane@example.com", "status": "Shipped", "placed": "2026-09-30",
+     "items": [{"sku": "SKU-001", "name": "Classic Cotton T-Shirt", "qty": 2}, {"sku": "SKU-008", "name": "Baseball Cap", "qty": 1}], "shipment_id": "SH-4001"},
+    {"order_id": "ORD-1002", "customer_email": "jane@example.com", "status": "Processing", "placed": "2026-10-05",
+     "items": [{"sku": "SKU-003", "name": "Running Shoes", "qty": 1}], "shipment_id": null},
+    {"order_id": "ORD-1003", "customer_email": "ravi@example.com", "status": "Delivered", "placed": "2026-09-20",
+     "items": [{"sku": "SKU-004", "name": "Leather Wallet", "qty": 1}], "shipment_id": "SH-4003"},
+    {"order_id": "ORD-1004", "customer_email": "ravi@example.com", "status": "Shipped", "placed": "2026-10-01",
+     "items": [{"sku": "SKU-005", "name": "Wool Scarf", "qty": 3}], "shipment_id": "SH-4004"},
+    {"order_id": "ORD-1005", "customer_email": "meera@example.com", "status": "Cancelled", "placed": "2026-09-28",
+     "items": [{"sku": "SKU-002", "name": "Denim Jacket", "qty": 1}], "shipment_id": null},
+    {"order_id": "ORD-1006", "customer_email": "meera@example.com", "status": "Shipped", "placed": "2026-10-02",
+     "items": [{"sku": "SKU-006", "name": "Canvas Backpack", "qty": 1}], "shipment_id": "SH-9999"}
+  ],
+  "shipments": {
+    "SH-4001": {"carrier": "BlueDart", "tracking": "BD1234567", "status": "In transit", "eta": "2026-10-08", "last_location": "Chandigarh hub"},
+    "SH-4003": {"carrier": "Delhivery", "tracking": "DL7654321", "status": "Delivered", "eta": "2026-09-24", "last_location": "Delivered to customer"},
+    "SH-4004": {"carrier": "BlueDart", "tracking": "BD7770004", "status": "Out for delivery", "eta": "2026-10-06", "last_location": "Local depot"}
+  }
+}

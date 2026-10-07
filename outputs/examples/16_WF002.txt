@@ -1,0 +1,52 @@
+# WF002 - custom 20% threshold taken from the request
+
+User Request: "Find products where vendor price differs by more than 20%."
+
+Selected Workflow: Product Price Validation (WF002)
+  Router: lexical | confidence 0.57 | Highest TF-IDF similarity (0.567) to 'Product Price Validation' (next best 0.182).
+  Parameters extracted from request: {'tolerance_pct': 20.0}
+
+Steps Executed:
+  1. [OK]   Load product prices [0 ms] - 8 internal products, 8 vendor prices
+  2. [OK]   match products by SKU [0 ms] - 7 matched; 1 only internal; 1 only in vendor list
+  3. [OK]   compare internal and vendor prices [0 ms] - compared 7 price pairs
+  4. [OK]   calculate percentage difference [0 ms] - percentage differences calculated
+  5. [OK]   flag exceptions [0 ms] - 1 exception(s)
+
+Conditions / Decisions:
+  * Parameter 'products_csv' not supplied -> using default 'data/samples/products.csv'
+  * Parameter 'vendor_csv' not supplied -> using default 'data/samples/vendor_prices.csv'
+  * SKUs normalised (trim, upper-case, punctuation removed) before matching
+  * diff % = (vendor - internal) / internal x 100, rounded to 2 dp
+  * Flag when |difference| > 20.0% (exactly 20.0% is NOT flagged); unpriceable rows are flagged for review
+
+Tool / API calls:
+  - csv_reader(path='data/samples/products.csv') -> ok
+  - csv_reader(path='data/samples/vendor_prices.csv') -> ok
+  - calculator(op='pct_diff', base='19.99', other='20.49') -> ok
+  - calculator(op='pct_diff', base='89.0', other='102.0') -> ok
+  - calculator(op='pct_diff', base='64.5', other='58.0') -> ok
+  - calculator(op='pct_diff', base='35.0', other='38.5') -> ok
+  - calculator(op='pct_diff', base='24.0', other='31.2') -> ok
+  - calculator(op='pct_diff', base='49.0', other='49.0') -> ok
+  - calculator(op='pct_diff', base='15.0', other='15.0') -> ok
+
+Status: SUCCESS  (0 ms)
+
+Result:
+Price validation report (tolerance 20.0%)
+  Matched products: 7 | Exceptions: 1
+
+  sku      product                 internal  vendor  diff_pct_str  flag     
+  -------  ----------------------  --------  ------  ------------  ---------
+  SKU-001  Classic Cotton T-Shirt  19.99     20.49   +2.50%        ok       
+  SKU-002  Denim Jacket            89.0      102.0   +14.61%       ok       
+  SKU-003  Running Shoes           64.5      58.0    -10.08%       ok       
+  SKU-004  Leather Wallet          35.0      38.5    +10.00%       ok       
+  SKU-005  Wool Scarf              24.0      31.2    +30.00%       EXCEPTION
+  SKU-006  Canvas Backpack         49.0      49.0    +0.00%        ok       
+  SKU-008  Baseball Cap            15.0      15.0    +0.00%        ok       
+
+  Only in our catalogue (no vendor price): SKU-009
+  Only in vendor list: SKU-010
+  Saved: outputs/artifacts/WF002_price_validation.csv

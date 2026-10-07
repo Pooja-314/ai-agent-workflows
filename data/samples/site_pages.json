@@ -1,0 +1,10 @@
+{
+  "brands": ["acme", "hydropro", "nord", "homeco"],
+  "categories": {
+    "Electronics": {"page": "/electronics/computer-accessories", "terms": ["mouse", "keyboard", "wireless", "laptop"]},
+    "Accessories": {"page": "/accessories/wallets-bags", "terms": ["wallet", "leather", "bag", "tote"]},
+    "Apparel": {"page": "/apparel/t-shirts", "terms": ["shirt", "tshirt", "cotton", "linen", "jacket"]},
+    "Drinkware": {"page": "/drinkware/bottles", "terms": ["bottle", "steel", "flask", "hydropro"]},
+    "Kitchen": {"page": "/kitchen/cutting-boards", "terms": ["bamboo", "cutting", "board", "kitchen"]}
+  }
+}

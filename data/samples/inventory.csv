@@ -1,0 +1,9 @@
+sku,product_name,current_stock,minimum_stock,max_stock
+SKU-001,Classic Cotton T-Shirt,12,20,100
+SKU-002,Denim Jacket,45,15,60
+SKU-003,Running Shoes,5,10,50
+SKU-004,Leather Wallet,10,10,40
+SKU-005,Wool Scarf,0,8,30
+SKU-006,Canvas Backpack,8,12,
+SKU-007,Sports Socks 3-pack,N/A,20,80
+SKU-008,Baseball Cap,60,25,90

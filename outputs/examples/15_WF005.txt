@@ -1,0 +1,20 @@
+# WF005 - no identifier given
+
+User Request: "What is the status of my order?"
+
+Selected Workflow: Customer Order Status (WF005)
+  Router: lexical | confidence 0.86 | Highest TF-IDF similarity (0.859) to 'Customer Order Status' (next best 0.0).
+
+Steps Executed:
+  1. [FAIL] Validate identifier [0 ms] - Please provide an order ID (e.g. ORD-1001) or the customer email.
+  2. [SKIP] search order data [0 ms] - not executed (earlier step stopped the run)
+  3. [SKIP] retrieve order status [0 ms] - not executed (earlier step stopped the run)
+  4. [SKIP] retrieve shipment information [0 ms] - not executed (earlier step stopped the run)
+  5. [SKIP] summarize current status [0 ms] - not executed (earlier step stopped the run)
+
+Status: NEEDS_INPUT  (0 ms)
+
+Result:
+  Please provide an order ID (e.g. ORD-1001) or the customer email.
+
+  -> Provide: order_id, email  (e.g. --param order_id=...)

@@ -1,0 +1,44 @@
+# WF003 - Tests file ingestion and validation
+
+User Request: "Process this vendor spreadsheet and show invalid rows."
+
+Selected Workflow: Vendor File Processing (WF003)
+  Router: lexical | confidence 0.51 | Highest TF-IDF similarity (0.508) to 'Vendor File Processing' (next best 0.097).
+
+Steps Executed:
+  1. [OK]   Read file [0 ms] - read 8 rows, 5 columns from data/samples/vendor_file.csv
+  2. [OK]   detect columns [0 ms] - 'Item Code' -> sku; 'Product Title' -> product_name; 'Unit Price ($)' -> price; 'Qty on Hand' -> quantity; 'Colour' -> color
+  3. [OK]   normalize column names [0 ms] - headers renamed to canonical names; values trimmed
+  4. [OK]   validate required fields [0 ms] - 5 valid, 2 invalid
+  5. [OK]   identify invalid rows [0 ms] - row 4: missing sku; row 5: missing product_name
+  6. [OK]   produce cleaned dataset [0 ms] - cleaned file and invalid-row report written
+
+Conditions / Decisions:
+  * Parameter 'vendor_file' not supplied -> using default 'data/samples/vendor_file.csv'
+  * Rule: rows missing SKU or product name are invalid; fully blank rows are dropped silently
+
+Tool / API calls:
+  - excel_csv_parser(path='data/samples/vendor_file.csv') -> ok
+
+Warnings:
+  ! Row 6 (ACME-104): price 'abc' is not numeric (row kept)
+  ! Row 9: duplicate SKU ACME-100 (row kept; run WF006 to review duplicates)
+
+Status: SUCCESS  (0 ms)
+
+Result:
+Vendor file processed: data/samples/vendor_file.csv
+  Total data rows: 7 | Valid: 5 | Invalid: 2
+
+Invalid rows:
+  row  sku       product_name          reason              
+  ---  --------  --------------------  --------------------
+  4              Bamboo Cutting Board  missing sku         
+  5    ACME-103                        missing product_name
+
+Warnings:
+  Row 6 (ACME-104): price 'abc' is not numeric (row kept)
+  Row 9: duplicate SKU ACME-100 (row kept; run WF006 to review duplicates)
+
+  Cleaned file: outputs/artifacts/WF003_cleaned.csv
+  Invalid-row report: outputs/artifacts/WF003_invalid_rows.csv

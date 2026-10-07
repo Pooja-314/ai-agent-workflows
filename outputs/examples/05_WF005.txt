@@ -1,0 +1,26 @@
+# WF005 - Tests lookup and missing-order handling
+
+User Request: "Where is order ORD-1001?"
+
+Selected Workflow: Customer Order Status (WF005)
+  Router: lexical | confidence 0.48 | Highest TF-IDF similarity (0.476) to 'Customer Order Status' (next best 0.0).
+  Parameters extracted from request: {'order_id': 'ORD-1001'}
+
+Steps Executed:
+  1. [OK]   Validate identifier [0 ms] - identifier OK: {'order_id': 'ORD-1001'}
+  2. [OK]   search order data [0 ms] - 1 order(s) found
+  3. [OK]   retrieve order status [0 ms] - ORD-1001: Shipped
+  4. [OK]   retrieve shipment information [0 ms] - ORD-1001: In transit
+  5. [OK]   summarize current status [0 ms] - summarised 1 order(s)
+
+Tool / API calls:
+  - order_api(order_id='ORD-1001') -> ok
+  - shipment_api(shipment_id='SH-4001') -> ok
+
+Status: SUCCESS  (0 ms)
+
+Result:
+  ORD-1001 (placed 2026-09-30)
+    Status:   Shipped
+    Items:    2 x Classic Cotton T-Shirt, 1 x Baseball Cap
+    Shipment: BlueDart - In transit (tracking BD1234567, ETA 2026-10-08, last seen: Chandigarh hub)

@@ -1,0 +1,12 @@
+[
+  {"label": "WF005 - order not found -> asks for another identifier", "request": "Where is order ORD-9999?", "expect_workflow": "WF005", "expect_status": "needs_input"},
+  {"label": "WF005 - lookup by email (2 orders)", "request": "Show order status for jane@example.com", "expect_workflow": "WF005", "expect_status": "success"},
+  {"label": "WF005 - flaky carrier API: retry succeeds", "request": "Where is order ORD-1004?", "expect_workflow": "WF005", "expect_status": "success"},
+  {"label": "WF005 - carrier has no record: optional step degrades gracefully", "request": "Where is order ORD-1006?", "expect_workflow": "WF005", "expect_status": "success"},
+  {"label": "WF005 - no identifier given", "request": "What is the status of my order?", "expect_workflow": "WF005", "expect_status": "needs_input"},
+  {"label": "WF002 - custom 20% threshold taken from the request", "request": "Find products where vendor price differs by more than 20%.", "expect_workflow": "WF002", "expect_status": "success"},
+  {"label": "WF003 - Excel vendor file, missing file path -> clear error", "request": "Process this vendor spreadsheet and show invalid rows.", "params": {"vendor_file": "data/samples/does_not_exist.csv"}, "expect_workflow": "WF003", "expect_status": "failed"},
+  {"label": "WF007 - goal + dates supplied -> full brief", "request": "Create a campaign brief for the new collection.", "params": {"goal": "Drive launch sales of the new summer collection", "dates": "2026-11-01 to 2026-11-30", "audience": "Millennials, 25-40", "promotion": "15% launch discount"}, "expect_workflow": "WF007", "expect_status": "success"},
+  {"label": "WF009 - nobody has the skill -> escalate", "request": "Assign this urgent task to the best available developer.", "params": {"task": "Urgent: migrate the cluster to kubernetes with autoscaling"}, "expect_workflow": "WF009", "expect_status": "escalated"},
+  {"label": "Ambiguous request -> asks to clarify instead of guessing", "request": "hello there", "expect_workflow": null, "expect_status": "no_match"}
+]

@@ -1,0 +1,43 @@
+# WF006 - Tests similarity and confidence
+
+User Request: "Find likely duplicate products in the catalog."
+
+Selected Workflow: Duplicate Product Detection (WF006)
+  Router: lexical | confidence 0.75 | Highest TF-IDF similarity (0.754) to 'Duplicate Product Detection' (next best 0.087).
+
+Steps Executed:
+  1. [OK]   Load products [0 ms] - 9 products loaded
+  2. [OK]   normalize names/SKUs [0 ms] - SKUs upper-cased/stripped of punctuation; names lower-cased, units/synonyms unified, brand removed
+  3. [OK]   compare identifiers [0 ms] - 1 exact SKU match(es)
+  4. [OK]   compare product attributes [1 ms] - 4 candidate pair(s); 3 variant pair(s) ignored
+  5. [OK]   group likely duplicates [0 ms] - 2 duplicate group(s)
+  6. [OK]   assign confidence [0 ms] - 2 group(s) scored
+
+Conditions / Decisions:
+  * Parameter 'catalog_csv' not supplied -> using default 'data/samples/catalog.csv'
+  * Exact (normalised) SKU match => definite duplicate
+  * High attribute similarity (score >= 0.8) => possible duplicate; same name but different colour/size => treated as variant, not duplicate
+
+Tool / API calls:
+  - csv_reader(path='data/samples/catalog.csv') -> ok
+  - text_similarity(35 calls) -> ok
+
+Status: SUCCESS  (1 ms)
+
+Result:
+2 duplicate group(s) found in 9 products:
+
+  Group 1 - DEFINITE (1.0)  matched on: brand, category, color, name~1.0, price~, size, sku
+      - SKU-1001: Classic Cotton T-Shirt [White, M] 19.99
+      - sku 1001: Classic Cotton T Shirt [White, M] 19.99
+      - SKU-1002: Classic Cotton Tee [White, M] 19.49
+      pair SKU-1001~sku 1001: definite (1.0)
+      pair SKU-1001~SKU-1002: possible (1.0)
+      pair sku 1001~SKU-1002: possible (1.0)
+
+  Group 2 - HIGH (1.0)  matched on: brand, category, color, name~1.0, price~, size
+      - SKU-2001: Stainless Steel Water Bottle 750ml [Silver, 750ml] 14.99
+      - SKU-2002: HydroPro Stainless Steel Water Bottle (750 ml) [Silver, 750ml] 14.99
+      pair SKU-2001~SKU-2002: possible (1.0)
+
+  (3 colour/size variant pair(s) were deliberately not flagged)

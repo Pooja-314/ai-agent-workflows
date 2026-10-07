@@ -1,0 +1,22 @@
+# WF003 - Excel vendor file, missing file path -> clear error
+
+User Request: "Process this vendor spreadsheet and show invalid rows."
+
+Selected Workflow: Vendor File Processing (WF003)
+  Router: lexical | confidence 0.51 | Highest TF-IDF similarity (0.508) to 'Vendor File Processing' (next best 0.097).
+
+Steps Executed:
+  1. [FAIL] Read file [0 ms] - File not found: data/samples/does_not_exist.csv
+  2. [SKIP] detect columns [0 ms] - not executed (earlier step stopped the run)
+  3. [SKIP] normalize column names [0 ms] - not executed (earlier step stopped the run)
+  4. [SKIP] validate required fields [0 ms] - not executed (earlier step stopped the run)
+  5. [SKIP] identify invalid rows [0 ms] - not executed (earlier step stopped the run)
+  6. [SKIP] produce cleaned dataset [0 ms] - not executed (earlier step stopped the run)
+
+Tool / API calls:
+  - excel_csv_parser(path='data/samples/does_not_exist.csv') -> error: File not found: data/samples/does_not_exist.csv [attempt 1]
+
+Status: FAILED  (0 ms)
+
+Result:
+  Step 'Read file' failed: File not found: data/samples/does_not_exist.csv

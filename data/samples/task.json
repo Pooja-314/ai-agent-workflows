@@ -1,0 +1,6 @@
+{
+  "description": "Urgent: fix intermittent 500 errors in the checkout payment API",
+  "priority": "high",
+  "deadline": "2026-10-09",
+  "estimated_hours": 6
+}
