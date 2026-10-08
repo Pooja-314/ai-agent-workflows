@@ -18,13 +18,14 @@ python -m pytest -q                                     # 20 tests
 python main.py --interactive                            # chat-style; asks follow-up questions
 streamlit run app.py                                    # browser-based demo for the Loom
 ```
+**No cloud API key is required.** Without a cloud API key, the agent can run in offline mode using
+TF-IDF routing and deterministic/template-based behavior for the LLM-dependent workflows.
 
-**No API key is required.** Without one, routing uses a TF-IDF matcher and the three LLM workflows
-(WF004 descriptions, WF007 messaging, WF008 intent) use a deterministic template engine; the trace
-says `offline-simulated` whenever that happens. To use a real model copy `.env.example` to `.env`
-and set `ANTHROPIC_API_KEY` or `OPENAI_API_KEY`; alternatively set `LLM_PROVIDER=ollama` to use a local Ollama model such as Mistral without a cloud API key; the trace then says `llm:anthropic` / `llm:openai`.
-If the API call or its JSON fails, the agent falls back to offline mode instead of crashing.
-(The live-LLM path is covered by mocked tests; run it once with your own key before demoing.)
+For local LLM execution, set `LLM_PROVIDER=ollama` and run an Ollama model such as Mistral.
+This keeps the project fully local and requires no cloud API key.
+
+Cloud providers can also be configured through `.env` using the supported API keys.
+If an LLM call or its JSON response fails, the agent falls back to offline behavior instead of crashing.
 
 ## Demo application
 
@@ -44,8 +45,8 @@ The UI uses the same `Engine` as the CLI; it is not a separate implementation.
 User request
    │
    ▼
-Router  (agent/router.py)       LLM picks workflow + extracts params from the Excel catalogue
-   │                            └─ fallback / sanity: TF-IDF over name+trigger+steps+outputs (+keywords)
+Router  (agent/router.py)       LLM or TF-IDF selects the workflow
+   │                            └─ deterministic parameter extraction handles request values
    │                            └─ low confidence → "no_match": asks the user to clarify, never guesses
    ▼
 Engine  (agent/engine.py)       runs the workflow's steps in the order defined in Excel
@@ -89,6 +90,9 @@ def decide(ctx):
     ctx.decide("Eligible if within 30 days"); ctx.output = {...}; ctx.report = "..."
 ```
 The module is auto-discovered. `tests/test_workflows.py::test_adding_an_11th_workflow...` does exactly this and passes.
+This extensibility is enforced by the registry: Excel defines the workflow contract,
+while `@step("WFxxx")` implementations provide the execution logic. The router and
+engine remain workflow-agnostic.
 
 ## The 10 workflows
 
@@ -103,7 +107,7 @@ The module is auto-discovered. `tests/test_workflows.py::test_adding_an_11th_wor
 | WF007 | Campaign Brief | Goal or dates missing → asks **before** generating; dates validated; timeline computed in code (not by the LLM) |
 | WF008 | SEO Keywords | De-dupe; LLM output validated to the 4 allowed intents; priority = intent + volume; unmapped keywords flagged |
 | WF009 | Task Assignment | Role + required skills + spare hours must fit; ranked by 0.6·skill + 0.4·free-capacity; nobody suitable → **escalate** |
-| WF010 | Performance Report | Failure rate per run; flags failure > 10% or avg > 3000 ms; `needs_input`/`escalated` runs are *not* counted as failures |
+| WF010 | Performance Report | Failure rate per run; flags failure > 10% or average execution time > 3000 ms; identifies frequent errors, slow steps, and recommendations |
 
 ## Key technical decisions (for the Loom)
 * **Excel as the contract, code as the implementation.** Step names/order come from Excel; a mismatch fails fast at startup.
